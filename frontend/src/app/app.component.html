@@ -1,0 +1,9 @@
+@if (authService.isInitializing()) {
+  <div class="fixed inset-0 flex flex-col items-center justify-center bg-bg-base z-[9999] gap-4">
+    <div class="w-10 h-10 border-4 border-brand-primary border-t-transparent rounded-full animate-spin"></div>
+    <span class="text-sm font-medium tracking-tight text-text-secondary animate-pulse">Initializing AttendAssist...</span>
+  </div>
+} @else {
+  <router-outlet></router-outlet>
+}
+<app-toast></app-toast>
