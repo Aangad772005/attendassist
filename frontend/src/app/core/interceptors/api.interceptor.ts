@@ -2,13 +2,13 @@ import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export const apiInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
   
   // Set default backend address dynamically based on context host
-  const isLocal = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-  const apiBase = isLocal ? 'http://localhost:5001' : 'https://attendassist-backend.onrender.com';
+  const apiBase = environment.backendUrl;
   let clonedRequest = req;
 
 

@@ -4,7 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
 import { ToastService } from '../../../core/services/toast.service';
-
+import { environment } from '../../../environments/environment';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -141,7 +141,7 @@ import { ToastService } from '../../../core/services/toast.service';
 
           <!-- Google OAuth anchor trigger -->
           <a
-            href="http://localhost:5001/api/v1/auth/google"
+            [href]="backendUrl + '/api/v1/auth/google'"
             class="w-full py-3 bg-bg-elevated hover:bg-bg-hover text-text-primary border border-brand-border font-semibold text-sm rounded-xl transition-all duration-200 flex items-center justify-center gap-3 shadow-md shadow-black/10 cursor-pointer hover:shadow-black/20"
           >
             <!-- Google Icon SVG -->
@@ -170,6 +170,7 @@ export class LoginComponent {
   loading = false;
   isForgotPasswordMode = false;
   resetEmail = '';
+  backendUrl = environment.backendUrl;
 
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);

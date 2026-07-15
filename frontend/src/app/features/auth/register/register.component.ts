@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-register',
@@ -118,7 +119,7 @@ import { AuthService } from '../../../core/services/auth.service';
 
           <!-- Google OAuth link anchor -->
           <a
-            href="http://localhost:5001/api/v1/auth/google"
+            [href]="backendUrl + '/api/v1/auth/google'"
             class="w-full py-3 bg-bg-elevated hover:bg-bg-hover text-text-primary border border-brand-border font-semibold text-sm rounded-xl transition-all duration-200 flex items-center justify-center gap-3 shadow-md shadow-black/10 cursor-pointer hover:shadow-black/20"
           >
             <!-- Google Icon SVG -->
@@ -143,6 +144,7 @@ export class RegisterComponent {
   registerForm: FormGroup;
   submitted = false;
   loading = false;
+  backendUrl = environment.backendUrl;
 
   passwordChecks = {
     length: false,
