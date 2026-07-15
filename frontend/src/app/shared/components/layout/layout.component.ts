@@ -3,12 +3,11 @@ import { RouterOutlet, Router, NavigationEnd, ActivatedRoute } from '@angular/ro
 import { filter } from 'rxjs';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { NavbarComponent } from '../navbar/navbar.component';
-import { ToastComponent } from '../toast/toast.component';
 
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [RouterOutlet, SidebarComponent, NavbarComponent, ToastComponent],
+  imports: [RouterOutlet, SidebarComponent, NavbarComponent],
   template: `
     <div class="flex h-screen bg-bg-base">
       <app-sidebar></app-sidebar>

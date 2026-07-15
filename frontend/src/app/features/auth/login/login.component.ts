@@ -4,7 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
 import { ToastService } from '../../../core/services/toast.service';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 @Component({
   selector: 'app-login',
   standalone: true,
