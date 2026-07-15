@@ -145,9 +145,27 @@ import { ToastService } from '../../core/services/toast.service';
                   <!-- Dynamic statistics layout -->
                   <div class="flex items-center justify-between gap-6 pt-2 border-t border-brand-border-subtle">
                     <div class="flex flex-col gap-2">
-                      <span class="text-xxs font-semibold uppercase tracking-wider text-text-muted">Target threshold</span>
-                      <div class="text-xs font-semibold text-text-primary">
-                        {{ sub.requiredAttendance }}%
+                      <div class="flex items-baseline gap-3">
+                        <div class="flex flex-col">
+                          <span class="text-xxs font-semibold uppercase tracking-wider text-text-muted">Current</span>
+                          @if (sub.stats.status === 'danger') {
+                            <span class="text-sm font-bold text-red-400">{{ sub.stats.percentage !== null ? sub.stats.percentage + '%' : '—' }}</span>
+                          } @else {
+                            <span class="text-xs font-semibold"
+                              [ngClass]="{
+                                'text-orange-500': sub.stats.status === 'critical',
+                                'text-brand-accent': sub.stats.status === 'safe',
+                                'text-amber-500': sub.stats.status === 'warning',
+                                'text-text-muted': sub.stats.status === 'no_data'
+                              }"
+                            >{{ sub.stats.percentage !== null ? sub.stats.percentage + '%' : '—' }}</span>
+                          }
+                        </div>
+                        <span class="text-text-muted text-xs">/</span>
+                        <div class="flex flex-col">
+                          <span class="text-xxs font-semibold uppercase tracking-wider text-text-muted">Target</span>
+                          <span class="text-xs font-semibold text-text-primary">{{ sub.requiredAttendance }}%</span>
+                        </div>
                       </div>
                       <div class="flex items-center gap-3 pt-1">
                         <div class="flex flex-col gap-1">
@@ -180,7 +198,7 @@ import { ToastService } from '../../core/services/toast.service';
                     <!-- Safety label tags -->
                     <div class="flex flex-col items-end">
                       <span
-                        class="px-2 py-0.5 text-[9px] font-bold uppercase rounded"
+                        class="px-2 py-0.5 text-[11px] font-bold uppercase rounded"
                         [ngClass]="{
                           'bg-brand-accent/15 text-brand-accent': sub.stats.status === 'safe',
                           'bg-amber-500/15 text-amber-500': sub.stats.status === 'warning',
@@ -193,7 +211,7 @@ import { ToastService } from '../../core/services/toast.service';
                       </span>
 
                       <!-- Safe Absences Spark Balance -->
-                      <span class="text-[10px] text-text-secondary mt-1.5 font-medium">
+                      <span class="text-xs text-text-secondary mt-1.5 font-medium">
                         @if (sub.stats.status === 'no_data') {
                           —
                         } @else if (sub.stats.safeAbsences > 0) {
@@ -224,7 +242,7 @@ import { ToastService } from '../../core/services/toast.service';
                       <div class="p-3 bg-bg-base rounded-xl border border-brand-border-subtle flex flex-col gap-3">
                         <div class="flex items-center justify-between">
                           <div class="text-xxs font-semibold uppercase text-text-muted tracking-wider">Attendance Breakdown</div>
-                          <div class="text-xxs font-semibold uppercase text-text-muted tracking-wider">Bunk Balance</div>
+                          <div class="text-xxs font-semibold uppercase text-text-muted tracking-wider text-right">Bunk Balance</div>
                         </div>
                         <div class="flex items-center justify-between">
                           <div class="text-xs font-bold text-text-primary">
@@ -327,10 +345,10 @@ import { ToastService } from '../../core/services/toast.service';
 
       <!-- Add/Edit Subject Modal Overlay -->
       @if (modalOpen()) {
-        <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div class="w-full max-w-md bg-bg-surface border border-brand-border rounded-2xl shadow-2xl animate-fade-in overflow-hidden">
+        <div class="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto py-8 px-4" style="background: rgba(220, 195, 170, 0.65); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);">
+          <div class="w-full max-w-md bg-bg-surface border border-brand-border rounded-2xl shadow-2xl animate-fade-in overflow-hidden my-auto">
             <!-- Modal Header -->
-            <div class="px-6 py-5 border-b border-brand-border-subtle bg-bg-surface flex items-center justify-between">
+            <div class="px-5 py-3 border-b border-brand-border-subtle bg-bg-surface flex items-center justify-between">
               <div>
                 <h3 class="text-base font-bold text-text-primary">{{ editMode ? 'Edit Course' : 'Add New Course' }}</h3>
                 <p class="text-xs text-text-muted mt-0.5">Track a new academic subject</p>
@@ -346,68 +364,116 @@ import { ToastService } from '../../core/services/toast.service';
             </div>
 
             <!-- Modal Body -->
-            <form [formGroup]="subjectForm" (ngSubmit)="onSave()" class="p-6 space-y-4">
+            <form [formGroup]="subjectForm" (ngSubmit)="onSave()" class="p-4 space-y-3">
               <div>
-                <label class="block text-xs font-bold text-text-secondary uppercase tracking-wider mb-2">Subject Name</label>
+                <label class="block text-xs font-bold text-text-secondary uppercase tracking-wider mb-1">Subject Name</label>
                 <input
                   type="text"
                   formControlName="name"
                   placeholder="e.g. Data Structures"
-                  class="w-full px-4 py-3 bg-bg-base border border-brand-border-subtle focus:border-brand-primary rounded-xl text-sm outline-none text-text-primary transition-colors"
+                  class="w-full px-3 py-2 bg-bg-base border border-brand-border-subtle focus:border-brand-primary rounded-xl text-sm outline-none text-text-primary transition-colors"
                   [ngClass]="{'border-red-500 focus:border-red-500': subjectForm.get('name')?.invalid && subjectForm.get('name')?.touched}"
                 />
               </div>
 
-              <div class="grid grid-cols-2 gap-4">
+              <div class="grid grid-cols-2 gap-3">
                 <div>
-                  <label class="block text-xs font-bold text-text-secondary uppercase tracking-wider mb-2">Course Code</label>
+                  <label class="block text-xs font-bold text-text-secondary uppercase tracking-wider mb-1">Course Code</label>
                   <input
                     type="text"
                     formControlName="code"
                     placeholder="e.g. CS101"
-                    class="w-full px-4 py-3 bg-bg-base border border-brand-border-subtle focus:border-brand-primary rounded-xl text-sm outline-none text-text-primary transition-colors"
+                    class="w-full px-3 py-2 bg-bg-base border border-brand-border-subtle focus:border-brand-primary rounded-xl text-sm outline-none text-text-primary transition-colors"
                   />
                 </div>
                 <div>
-                  <label class="block text-xs font-bold text-text-secondary uppercase tracking-wider mb-2">Target %</label>
+                  <label class="block text-xs font-bold text-text-secondary uppercase tracking-wider mb-1">Target %</label>
                   <div class="relative">
                     <input
                       type="number"
                       formControlName="requiredAttendance"
                       placeholder="75"
-                      class="w-full px-4 py-3 bg-bg-base border border-brand-border-subtle focus:border-brand-primary rounded-xl text-sm outline-none text-text-primary transition-colors pr-8"
+                      class="w-full px-3 py-2 bg-bg-base border border-brand-border-subtle focus:border-brand-primary rounded-xl text-sm outline-none text-text-primary transition-colors pr-8"
                     />
                     <span class="absolute right-4 top-1/2 -translate-y-1/2 text-text-muted font-bold">%</span>
                   </div>
                 </div>
               </div>
 
-              <div class="grid grid-cols-2 gap-4 pt-2 border-t border-brand-border-subtle mt-2">
+              <div class="grid grid-cols-2 gap-3 pt-2 border-t border-brand-border-subtle">
                 <div>
-                  <label class="block text-xs font-bold text-text-secondary uppercase tracking-wider mb-2">Total Classes Held</label>
+                  <label class="block text-xs font-bold text-text-secondary uppercase tracking-wider mb-1">Total Classes Held</label>
                   <input
                     type="number"
                     formControlName="totalClasses"
                     placeholder="0"
-                    class="w-full px-4 py-3 bg-bg-base border border-brand-border-subtle focus:border-brand-primary rounded-xl text-sm outline-none text-text-primary transition-colors"
+                    class="w-full px-3 py-2 bg-bg-base border border-brand-border-subtle focus:border-brand-primary rounded-xl text-sm outline-none text-text-primary transition-colors"
                   />
                 </div>
                 <div>
-                  <label class="block text-xs font-bold text-text-secondary uppercase tracking-wider mb-2">Classes Attended</label>
+                  <label class="block text-xs font-bold text-text-secondary uppercase tracking-wider mb-1">Classes Attended</label>
                   <input
                     type="number"
                     formControlName="attendedClasses"
                     placeholder="0"
-                    class="w-full px-4 py-3 bg-bg-base border border-brand-border-subtle focus:border-brand-primary rounded-xl text-sm outline-none text-text-primary transition-colors"
+                    class="w-full px-3 py-2 bg-bg-base border border-brand-border-subtle focus:border-brand-primary rounded-xl text-sm outline-none text-text-primary transition-colors"
                   />
                 </div>
+              </div>
+
+              <!-- Subject Bar Color Picker -->
+              <div class="pt-2 border-t border-brand-border-subtle">
+                <label class="block text-xs font-bold text-text-secondary uppercase tracking-wider mb-1.5">Subject Bar Color</label>
+                <div class="flex items-center gap-2 flex-wrap">
+                  @for (col of colorPalette; track col) {
+                    <button
+                      type="button"
+                      (click)="selectColor(col)"
+                      class="w-7 h-7 rounded-full transition-all duration-150 cursor-pointer flex items-center justify-center border-2"
+                      [style.background-color]="col"
+                      [style.border-color]="selectedColor() === col ? '#541A1A' : 'transparent'"
+                      [style.box-shadow]="selectedColor() === col ? '0 0 0 2px rgba(84,26,26,0.35)' : 'none'"
+                      [title]="col"
+                    >
+                      @if (selectedColor() === col) {
+                        <svg class="w-3.5 h-3.5 text-white drop-shadow" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                      }
+                    </button>
+                  }
+                  <!-- Custom color input -->
+                  <label
+                    class="w-7 h-7 rounded-full border-2 border-dashed border-brand-border cursor-pointer flex items-center justify-center relative overflow-hidden transition-all duration-150 hover:border-brand-primary"
+                    title="Pick a custom color"
+                    [style.background-color]="colorPalette.includes(selectedColor()) ? 'transparent' : selectedColor()"
+                  >
+                    @if (colorPalette.includes(selectedColor())) {
+                      <svg class="w-3.5 h-3.5 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                      </svg>
+                    } @else {
+                      <svg class="w-3.5 h-3.5 text-white drop-shadow" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                    }
+                    <input
+                      type="color"
+                      [value]="selectedColor()"
+                      (input)="selectColor($any($event.target).value)"
+                      class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                    />
+                  </label>
+                </div>
+                <!-- Preview strip -->
+                <div class="mt-2.5 h-1.5 w-full rounded-full" [style.background-color]="selectedColor()"></div>
               </div>
 
               <!-- Save button -->
               <button
                 type="submit"
                 [disabled]="modalLoading()"
-                class="w-full mt-3 py-3 bg-brand-primary hover:bg-brand-primary-hover disabled:bg-brand-primary/50 text-white font-semibold text-xs rounded-xl shadow-lg transition-all duration-200 cursor-pointer flex items-center justify-center gap-2"
+                class="w-full mt-1 py-2.5 bg-brand-primary hover:bg-brand-primary-hover disabled:bg-brand-primary/50 text-white font-semibold text-xs rounded-xl shadow-lg transition-all duration-200 cursor-pointer flex items-center justify-center gap-2"
               >
                 @if (modalLoading()) {
                   <div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>

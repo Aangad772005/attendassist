@@ -10,7 +10,7 @@ import { ToastComponent } from '../toast/toast.component';
   standalone: true,
   imports: [RouterOutlet, SidebarComponent, NavbarComponent, ToastComponent],
   template: `
-    <div class="flex h-screen overflow-hidden bg-bg-base">
+    <div class="flex h-screen bg-bg-base">
       <app-sidebar></app-sidebar>
       <div class="flex-1 flex flex-col min-w-0">
         <app-navbar [pageTitle]="pageTitle"></app-navbar>
