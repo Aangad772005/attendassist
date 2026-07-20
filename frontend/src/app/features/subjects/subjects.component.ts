@@ -345,8 +345,8 @@ import { ToastService } from '../../core/services/toast.service';
 
       <!-- Add/Edit Subject Modal Overlay -->
       @if (modalOpen()) {
-        <div class="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto py-8 px-4" style="background: rgba(220, 195, 170, 0.65); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);">
-          <div class="w-full max-w-md bg-bg-surface border border-brand-border rounded-2xl shadow-2xl animate-fade-in overflow-hidden my-auto">
+        <div class="fixed inset-0 z-50 flex items-center justify-center p-4" style="background: rgba(220, 195, 170, 0.65); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);">
+          <div class="w-full max-w-md bg-bg-surface border border-brand-border rounded-2xl shadow-2xl animate-fade-in flex flex-col overflow-hidden" style="max-height: min(580px, calc(100vh - 2rem));">
             <!-- Modal Header -->
             <div class="px-5 py-3 border-b border-brand-border-subtle bg-bg-surface flex items-center justify-between">
               <div>
@@ -364,7 +364,7 @@ import { ToastService } from '../../core/services/toast.service';
             </div>
 
             <!-- Modal Body -->
-            <form [formGroup]="subjectForm" (ngSubmit)="onSave()" class="p-4 space-y-3">
+            <form [formGroup]="subjectForm" (ngSubmit)="onSave()" class="p-4 space-y-3 overflow-y-auto flex-1">
               <div>
                 <label class="block text-xs font-bold text-text-secondary uppercase tracking-wider mb-1">Subject Name</label>
                 <input

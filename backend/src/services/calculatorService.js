@@ -167,9 +167,14 @@ class CalculatorService {
    * @returns {string} Friendly greeting statement.
    */
   getFallbackMessage(name) {
+    const firstName = (name || 'Student').trim().split(/\s+/)[0];
     const period = this.getGreetingPeriod();
-    const capitalizedPeriod = period.charAt(0).toUpperCase() + period.slice(1);
-    return `Good ${capitalizedPeriod}, ${name}! Keep tracking your sessions to stay on top of your attendance.`;
+    const messages = {
+      morning: `Rise and shine, ${firstName} — those classes won't attend themselves. ☀️`,
+      afternoon: `Still going, ${firstName}? Good. Keep that attendance streak alive. 💪`,
+      evening: `Evening check-in, ${firstName}. How did the classes go today? 🌙`,
+    };
+    return messages[period];
   }
 }
 

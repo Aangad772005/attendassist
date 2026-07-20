@@ -12,7 +12,7 @@ let model = null;
 if (config.gemini.apiKey) {
   try {
     genAI = new GoogleGenerativeAI(config.gemini.apiKey);
-    model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
   } catch (err) {
     console.error('❌ Failed to initialize Google Gemini SDK:', err.message);
   }
