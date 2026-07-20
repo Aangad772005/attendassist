@@ -1,5 +1,6 @@
 const express = require('express');
 const passport = require('passport');
+const config = require('../config/env');
 const authController = require('../controllers/authController');
 const { authLimiter } = require('../config/rateLimit');
 const authenticate = require('../middleware/authenticate');
@@ -37,7 +38,7 @@ router.get(
 router.get(
   '/google/callback',
   passport.authenticate('google', {
-    failureRedirect: 'http://localhost:4200/login?success=false&reason=oauth_cancelled',
+    failureRedirect: `${config.client.url}/login?success=false&reason=oauth_cancelled`,
     session: false,
   }),
   authController.googleCallback
